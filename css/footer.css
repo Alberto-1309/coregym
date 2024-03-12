@@ -1,0 +1,37 @@
+/* Footer Styles */
+footer {
+    background-color: #f3f3f3; /* Wihte background */
+    color: #000000; /* Black text color */
+    padding: 20px 0; /* Padding above and below */
+    text-align: center; /* Center align the text */
+  }
+  
+  .footer-container {
+    max-width: 1200px; /* Maximum width of the footer */
+    margin: 0 auto; /* Center the container */
+    display: flex; /* Use flexbox for layout */
+    justify-content: center; /* Center items on the main axis */
+    flex-wrap: wrap; /* Wrap items to the next line if space runs out */
+  }
+  
+  .footer-link {
+    color: #000000; /* Black link color */
+    margin: 0 10px; /* Margin on the left and right */
+    text-decoration: none; /* No underline on links */
+    font-size: 14px; /* Font size for the links */
+  }
+  
+  .footer-link:hover {
+    text-decoration: underline; /* Underline on hover */
+  }  
+  /* Add responsive behavior */
+  @media (max-width: 600px) {
+    .footer-container {
+      flex-direction: column; /* Stack items vertically on small screens */
+    }
+    
+    .footer-link {
+      margin: 5px 0; /* Margin on the top and bottom */
+    }
+  }
+  
