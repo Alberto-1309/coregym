@@ -92,7 +92,7 @@
         <div id="modalLogin" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="document.getElementById('modalLogin').style.display='none'">&times;</span>
-                <form action="login.php" method="post">
+                <form id="formularioLogin" method="post"> <!-- Asegúrate de que el ID esté aquí -->
                     <h2>Iniciar Sesión</h2>
                     <input type="email" name="correo" placeholder="Correo" required>
                     <input type="password" name="contrasena" placeholder="Contraseña" required>
@@ -100,7 +100,7 @@
                         <input type="checkbox" name="sesion_iniciada">
                         <label for="sesion_iniciada">Recuérdame</label>
                     </div>
-                    <button id="btnformulario" type="submit">Ingresar</button>
+                    <button type="submit" id="btnformularioLogin">Ingresar</button>
                 </form>
             </div>
         </div>
@@ -224,22 +224,56 @@
             method: 'POST',
             body: datosFormulario
         })
-        .then(response => response.text())
+        .then(response => response.json()) // Asegúrate de que registrar.php envía una respuesta JSON
         .then(data => {
-            // Manejo de respuesta y lógica de éxito
-            mostrarMensaje("Simulación de comunicación con el banco...");
+            if (data.exito) {
+                // Manejo de respuesta de éxito
+                mostrarMensaje("Simulación de comunicación con el banco...");
 
-            setTimeout(function() {
-                mostrarMensaje("Pago realizado!");
                 setTimeout(function() {
-                    // Recarga la página sin necesidad de ocultar los modales manualmente
-                    window.location.reload();
-                }, 2000); // Espera 2 segundos después de mostrar "Pago realizado!"
-            }, 2000); // Espera 2 segundos después de "Simulación de comunicación con el banco..."
+                    // Aquí podrías redirigir al usuario a otra página o realizar alguna otra acción
+                    mostrarMensaje("Pago realizado!");
+                    setTimeout(function() {
+                        // Recarga la página sin necesidad de ocultar los modales manualmente
+                        window.location.reload();
+                    }, 2000); // Espera 2 segundos después de mostrar "Pago realizado!"
+                }, 2000); // Espera 2 segundos después de mostrar mensaje de éxito de registro
+            } else {
+                // Manejo de respuesta de error
+                mostrarMensaje("Error al realizar el pago. Por favor, intenta de nuevo.", true);
+            }
         })
         .catch(error => {
             console.error('Error:', error);
-            // Manejo de error
+            mostrarMensaje("Error al procesar el pago. Por favor, intenta de nuevo.", true);
         });
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('formularioLogin').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevenir el envío tradicional del formulario
+
+            var datosFormulario = new FormData(this); // 'this' se refiere al formulario
+            fetch('login.php', {
+                method: 'POST',
+                body: datosFormulario
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.exito) {
+                    // Login exitoso, recargar la página
+                    window.location.reload();
+                } else {
+                    // Mostrar mensaje de error
+                    mostrarMensaje(data.mensaje, true); // Asegúrate de tener una función para mostrar mensajes
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                mostrarMensaje("Error al procesar la solicitud. Por favor, intenta de nuevo.", true);
+            });
+        });
+    });
+
+
 </script>

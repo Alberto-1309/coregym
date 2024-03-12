@@ -44,8 +44,14 @@ $contrasenaEncriptada = password_hash($contrasena, PASSWORD_DEFAULT); // Encript
 // Construir la consulta SQL para la inserción
 $sql = "INSERT INTO USUARIOS (NOMBRE, APELLIDO, DNI, SEXO, FECHA_NAC, FECHA_VENC, PESO, ALTURA, CORREO, CONTRASENA) VALUES ('$nombre', '$apellido', '$dni', '$sexo', '$fecha_nac', '$fecha_vencimiento', '$peso', '$altura', '$correo', '$contrasenaEncriptada')";
 
-// Ejecutar la consulta
-mysqli_query($conn, $sql);
+// Intentar ejecutar la consulta
+if (mysqli_query($conn, $sql)) {
+    // Si la inserción fue exitosa, prepara una respuesta de éxito
+    $respuesta = ['exito' => true, 'mensaje' => 'Registro completado con éxito'];
+} else {
+    // Si la inserción falló, prepara una respuesta de error
+    $respuesta = ['exito' => false, 'mensaje' => 'Error al registrar los datos.'];
+}
 
 // Cerrar la conexión
 mysqli_close($conn);
@@ -58,4 +64,8 @@ if (isset($_POST['sesion_iniciada']) && $_POST['sesion_iniciada'] == 'on') {
     $expiracion = time() + (30 * 24 * 60 * 60); // 30 días
     setcookie('usuarioLogueado', $nombre, $expiracion, "/");
 }
+
+// Enviar la respuesta en formato JSON
+header('Content-Type: application/json');
+echo json_encode($respuesta);
 ?>
