@@ -1,0 +1,49 @@
+header { 
+    background-color: #f3f3f3;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+}
+nav a, nav button { 
+    margin: 0 10px; 
+    text-decoration: none; 
+    color: #000; 
+    background-color: transparent;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+#btnRegistrarse {
+    background-color: #4CAF50; /* Verde */
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+#btnInicio {
+    background-color: #FF0000; /* Rojo */
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+#btnCerrarSesion {
+    background-color: #FF0000; /* Rojo */
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+#btnRegistrarse:hover {
+    background-color: #45a049;
+}
+#btnInicio:hover {
+    background-color: #b81414;
+}
+#btnCerrarSesion:hover {
+    background-color: #b81414;
+}
