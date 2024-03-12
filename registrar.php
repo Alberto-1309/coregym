@@ -1,17 +1,19 @@
 <?php
+// Configuración de la conexión a la base de datos
 $servername = "localhost";
 $username = "coregym";
-$password = ""; // Sin contraseña
+$password = ""; // Importante usar contraseña en entornos de producción
 $dbname = "pw";
 
 // Crear conexión
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = mysqli_connect($servername, $username, $password, $dbname);
 
 // Verificar conexión
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
 }
 
+// Recoger y procesar datos del formulario
 $suscripcion = $_POST['suscripcion'] ?? '';
 $fecha_inicio = new DateTime();
 switch ($suscripcion) {
@@ -27,33 +29,33 @@ switch ($suscripcion) {
     default:
         $fecha_vencimiento = $fecha_inicio->format('Y-m-d');
 }
+
 $sexo = $_POST['sexo'] ?? 'otro';
-
-// Preparar y vincular
-$stmt = $conn->prepare("INSERT INTO USUARIOS (NOMBRE, APELLIDO, DNI, SEXO, FECHA_NAC, FECHA_VENC, PESO, ALTURA, CORREO, CONTRASENA) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-$stmt->bind_param("ssssssssss", $nombre, $apellido, $dni, $sexo, $fecha_nac, $fecha_vencimiento, $peso, $altura, $correo, $contrasenaEncriptada);
-
-// Establecer parámetros y ejecutar
-$nombre = $_POST['nombre'];
-$apellido = $_POST['apellido'];
-$dni = $_POST['dni'];
-$fecha_nac = $_POST['fecha_nac'];
-$peso = !empty($_POST['peso']) ? $_POST['peso'] : NULL;
-$altura = !empty($_POST['altura']) ? $_POST['altura'] : NULL;
-$correo = $_POST['correo'];
-$contrasena = $_POST['contrasena'];
+$nombre = mysqli_real_escape_string($conn, $_POST['nombre']);
+$apellido = mysqli_real_escape_string($conn, $_POST['apellido']);
+$dni = mysqli_real_escape_string($conn, $_POST['dni']);
+$fecha_nac = mysqli_real_escape_string($conn, $_POST['fecha_nac']);
+$peso = !empty($_POST['peso']) ? mysqli_real_escape_string($conn, $_POST['peso']) : NULL;
+$altura = !empty($_POST['altura']) ? mysqli_real_escape_string($conn, $_POST['altura']) : NULL;
+$correo = mysqli_real_escape_string($conn, $_POST['correo']);
+$contrasena = mysqli_real_escape_string($conn, $_POST['contrasena']);
 $contrasenaEncriptada = password_hash($contrasena, PASSWORD_DEFAULT); // Encriptar contraseña
-$stmt->execute();
 
+// Construir la consulta SQL para la inserción
+$sql = "INSERT INTO USUARIOS (NOMBRE, APELLIDO, DNI, SEXO, FECHA_NAC, FECHA_VENC, PESO, ALTURA, CORREO, CONTRASENA) VALUES ('$nombre', '$apellido', '$dni', '$sexo', '$fecha_nac', '$fecha_vencimiento', '$peso', '$altura', '$correo', '$contrasenaEncriptada')";
+
+// Ejecutar la consulta
+mysqli_query($conn, $sql);
+
+// Cerrar la conexión
+mysqli_close($conn);
+
+// Gestión de sesión y cookies
 session_start();
 $_SESSION['usuario'] = $nombre;
 
-// Ajuste para verificar si el usuario marcó la casilla 'sesion_iniciada'
 if (isset($_POST['sesion_iniciada']) && $_POST['sesion_iniciada'] == 'on') {
     $expiracion = time() + (30 * 24 * 60 * 60); // 30 días
     setcookie('usuarioLogueado', $nombre, $expiracion, "/");
 }
-
-$stmt->close();
-$conn->close();
 ?>
