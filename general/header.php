@@ -1,4 +1,11 @@
 <section>
+    <?php
+    session_start();
+    if (isset($_COOKIE['usuarioLogueado'])) {
+        // Establecer variables de sesión u otro mecanismo para mantener al usuario logueado
+        $_SESSION['usuario'] = $_COOKIE['usuarioLogueado'];
+    }
+    ?>
     <header>
         <div class="logo"><img src="./img/logo_coregym.png" width="50px" height="50px"/></div>
         <nav>
@@ -248,7 +255,6 @@
             mostrarMensaje("Error al procesar el pago. Por favor, intenta de nuevo.", true);
         });
     }
-
     document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('formularioLogin').addEventListener('submit', function(e) {
             e.preventDefault(); // Prevenir el envío tradicional del formulario
@@ -274,6 +280,4 @@
             });
         });
     });
-
-
 </script>
