@@ -1,13 +1,8 @@
-<?php
-// donde-estamos.php
-$title = "Dónde Estamos";
-?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title><?php echo $title; ?></title>
+    <title>Donde estamos</title>
         <!-- CSS GENERAL -->
         <link rel="stylesheet" href="css/general.css">
         <link rel="stylesheet" href="css/header.css">

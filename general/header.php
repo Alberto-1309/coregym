@@ -1,4 +1,12 @@
 <section>
+    <?php
+    session_start();
+
+    if (isset($_COOKIE['usuarioLogueado'])) {
+        // Establecer variables de sesión u otro mecanismo para mantener al usuario logueado
+        $_SESSION['usuario'] = $_COOKIE['usuarioLogueado'];
+    }
+    ?>
     <header>
         <div class="logo"><img src="./img/logo_coregym.png" width="50px" height="50px"/></div>
         <nav>

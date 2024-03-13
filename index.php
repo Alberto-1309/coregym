@@ -1,12 +1,3 @@
-<?php
-session_start();
-
-if (isset($_COOKIE['usuarioLogueado'])) {
-    // Establecer variables de sesión u otro mecanismo para mantener al usuario logueado
-    $_SESSION['usuario'] = $_COOKIE['usuarioLogueado'];
-}
-?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
