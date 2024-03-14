@@ -5,6 +5,17 @@ header {
     justify-content: space-between;
     align-items: center; 
 }
+.logo-titulo {
+    display: flex;
+    align-items: center; /* Centra verticalmente los elementos */
+}
+.logo-titulo img {
+    margin-right: 10px; /* Espacio entre el logo y el título */
+}
+.logo-titulo a {
+    text-decoration: none; /* Elimina el subrayado */
+    color: inherit; /* Utiliza el color heredado del elemento padre */
+}
 nav a, nav button { 
     margin: 0 10px; 
     text-decoration: none; 

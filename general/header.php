@@ -7,7 +7,14 @@
     }
     ?>
     <header>
-        <div class="logo"><img src="./img/logo_coregym.png" width="50px" height="50px"/></div>
+        <div class="logo-titulo">
+            <a href="index.php">
+                <img src="./img/logo_coregym.png" width="50px" height="50px"/>
+            </a>
+            <a href="index.php"> <!-- Enlace para el título -->
+                <h1>CoreGym</h1>
+            </a>
+        </div>
         <nav>
             <a href="donde-estamos.php">Donde estamos</a>
             <a href="actividades.php">Actividades</a>
