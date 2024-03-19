@@ -87,7 +87,6 @@
                     var tipoDeCuota = this.getAttribute('data-cuota');
                     // Suponiendo que tu formulario tenga un campo para el tipo de cuota:
                     var campoCuota = document.querySelector('#formularioRegistro [name="suscripcion"]');
-                    
                     if(campoCuota) {
                         campoCuota.value = tipoDeCuota;
                     }
@@ -103,8 +102,6 @@
                         const cuota = selectSuscripcion.value;
                         precioSuscripcion.textContent = precios[cuota] || '';
                     };
-                    // Evento para cambiar el precio cada vez que se selecciona una nueva suscripción
-                    selectSuscripcion.addEventListener('change', actualizarPrecio);
                     // Actualizar el precio inicial al cargar la página
                     actualizarPrecio();
                     // Mostrar el modal de registro
