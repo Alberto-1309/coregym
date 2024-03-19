@@ -90,6 +90,20 @@
                     if(campoCuota) {
                         campoCuota.value = tipoDeCuota;
                     }
+                    const precios = {
+                        semanal: '11.90€',
+                        mensual: '35.90€',
+                        semestral: '195.00€'
+                    };
+                    const selectSuscripcion = document.querySelector('[name="suscripcion"]');
+                    const precioSuscripcion = document.getElementById('precioSuscripcion');
+                    // Función para actualizar el precio
+                    const actualizarPrecio = () => {
+                        const cuota = selectSuscripcion.value;
+                        precioSuscripcion.textContent = precios[cuota] || '';
+                    };
+                    // Actualizar el precio inicial al cargar la página
+                    actualizarPrecio();
                     // Mostrar el modal de registro
                     document.getElementById('modalRegistro').style.display = 'block';
                 });
