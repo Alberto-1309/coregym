@@ -87,9 +87,26 @@
                     var tipoDeCuota = this.getAttribute('data-cuota');
                     // Suponiendo que tu formulario tenga un campo para el tipo de cuota:
                     var campoCuota = document.querySelector('#formularioRegistro [name="suscripcion"]');
+                    
                     if(campoCuota) {
                         campoCuota.value = tipoDeCuota;
                     }
+                    const precios = {
+                        semanal: '11.90€',
+                        mensual: '35.90€',
+                        semestral: '195.00€'
+                    };
+                    const selectSuscripcion = document.querySelector('[name="suscripcion"]');
+                    const precioSuscripcion = document.getElementById('precioSuscripcion');
+                    // Función para actualizar el precio
+                    const actualizarPrecio = () => {
+                        const cuota = selectSuscripcion.value;
+                        precioSuscripcion.textContent = precios[cuota] || '';
+                    };
+                    // Evento para cambiar el precio cada vez que se selecciona una nueva suscripción
+                    selectSuscripcion.addEventListener('change', actualizarPrecio);
+                    // Actualizar el precio inicial al cargar la página
+                    actualizarPrecio();
                     // Mostrar el modal de registro
                     document.getElementById('modalRegistro').style.display = 'block';
                 });
