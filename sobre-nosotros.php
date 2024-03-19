@@ -73,17 +73,17 @@
             <div class="team-member">
                 <img src="img/jose.png" alt="Jose Lucia, Entrenador Personal">
                 <h3>Jose Lucia</h3>
-                <p>Entrenador Personal - Especializado en HIIT y entrenamiento de fuerza. "Mi pasión es ver a mis clientes alcanzar sus metas y superar sus límites".</p>
+                <p>Jose Lucía es nuestro Experto en Entrenamiento de Fuerza y Mancuernas, especializado en llevar el entrenamiento con pesas a nuevos niveles. Con una dedicación incansable a la mejora continua, Jose implementa técnicas avanzadas de levantamiento y rutinas de alta intensidad que desafían incluso a los atletas más experimentados. Su metodología se basa en la precisión, el control y la superación de barreras personales, asegurando que cada cliente no solo aumente su fuerza muscular, sino que también desarrolle resistencia y disciplina.</p>
             </div>
             <div class="team-member">
                 <img src="img/alberto.png" alt="Jesús Alberto Mellado, Entrenador Personal">
                 <h3>Jesús Alberto Mellado</h3>
-                <p>Entrenador Personal - Especializado en HIIT y entrenamiento de fuerza. "Mi pasión es ver a mis clientes alcanzar sus metas y superar sus límites".</p>
+                <p>Como nuestro Especialista en Rehabilitación y Movilidad, Jesús Alberto Mellado combina técnicas de fisioterapia con entrenamiento personalizado para ayudar a clientes en recuperación o aquellos que buscan mejorar su movilidad y funcionalidad. Su enfoque integral en la recuperación muscular y articular ha transformado la vida de muchos, permitiéndoles alcanzar sus metas de fitness sin dolor.</p>
             </div>
             <div class="team-member">
                 <img src="img/candi.png" alt="Cándido Alonso, Entrenador Personal">
                 <h3>Cándido Alonso</h3>
-                <p>Entrenador Personal - Especializado en HIIT y entrenamiento de fuerza. "Mi pasión es ver a mis clientes alcanzar sus metas y superar sus límites".</p>
+                <p>Cándido Alonso se destaca como nuestro Maestro de Técnicas de Entrenamiento de Alta Intensidad, especializándose en CrossFit y entrenamientos metabólicos. Su pasión por desafiar los límites del rendimiento humano lo lleva a crear programas de entrenamiento dinámicos que no solo queman calorías sino que también construyen una fortaleza inquebrantable.</p>
             </div>
         </section>
         <section>
