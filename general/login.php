@@ -39,8 +39,7 @@ mysqli_close($conn);
 
 // Preparar y enviar la respuesta en formato JSON
 $respuesta = [
-    'exito' => $loginExitoso,
-    'mensaje' => $loginExitoso ? 'Login exitoso.' : 'Correo o contraseña incorrecta.'
+    'exito' => $loginExitoso
 ];
 
 header('Content-Type: application/json');

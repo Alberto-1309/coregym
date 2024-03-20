@@ -7,14 +7,14 @@ header {
 }
 .logo-titulo {
     display: flex;
-    align-items: center; /* Centra verticalmente los elementos */
+    align-items: center;
 }
 .logo-titulo img {
-    margin-right: 10px; /* Espacio entre el logo y el título */
+    margin-right: 10px;
 }
 .logo-titulo a {
-    text-decoration: none; /* Elimina el subrayado */
-    color: inherit; /* Utiliza el color heredado del elemento padre */
+    text-decoration: none;
+    color: inherit;
 }
 nav a, nav button { 
     margin: 0 10px; 
@@ -26,7 +26,7 @@ nav a, nav button {
     cursor: pointer;
 }
 #btnRegistrarse {
-    background-color: #4CAF50; /* Verde */
+    background-color: #4CAF50;
     color: white;
     padding: 10px 20px;
     font-size: 16px;
@@ -58,7 +58,6 @@ nav a, nav button {
 #btnCerrarSesion:hover {
     background-color: #b81414;
 }
-
 /* CSS FORMULARIOS */
 .modal { 
     display: none; 
@@ -74,10 +73,10 @@ nav a, nav button {
 }
 .modal-content {
     background-color: #fefefe;
-    margin: 15% auto; /* Centra el modal */
+    margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 40%; /* Ajuste para mejor visualización */
+    width: 40%;
     height: auto;
 }
 .close { 
@@ -117,16 +116,25 @@ input[type=text], input[type=email], input[type=password] {
     font-size: 14px;
 }
 #mensaje{
-    position: fixed; /* o absolute, según tu necesidad */
-    top: 20px; /* Ajusta según necesites */
+    position: fixed;
+    top: 20px;
     left: 50%;
     transform: translateX(-50%);
     padding: 15px;
     border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera para dar profundidad */
-    display: none; /* Esto se mantiene para que inicialmente esté oculto */
-    z-index: 100; /* Asegura que esté sobre otros elementos */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: none;
+    z-index: 100;
 }
 .selector{
     margin-bottom: 5px;
+}
+#btnRegistrarseModal, #btnLoginModal{
+    font-size: 100%; 
+    text-decoration: underline;
+    border: none;
+    background: none;
+    cursor: pointer; 
+    padding: 0;
+    color: blue;
 }

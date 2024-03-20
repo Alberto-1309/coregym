@@ -2,7 +2,6 @@
     <?php
     session_start();
     if (isset($_COOKIE['usuarioLogueado'])) {
-        // Establecer variables de sesión u otro mecanismo para mantener al usuario logueado
         $_SESSION['usuario'] = $_COOKIE['usuarioLogueado'];
     }
     ?>
@@ -11,7 +10,7 @@
             <a href="index.php">
                 <img src="./img/logo_coregym.png" width="50px" height="50px"/>
             </a>
-            <a href="index.php"> <!-- Enlace para el título -->
+            <a href="index.php">
                 <h1>CoreGym</h1>
             </a>
         </div>
@@ -89,6 +88,7 @@
                         <label for="sesion_iniciada">Mantener sesión iniciada</label>
                     </div>
                     <br>
+                    <p>Ya tienes una cuenta? <button id="btnLoginModal">Iniciar sesión</button></p>
                     <button id="btnformulario" type="submit">Continuar pago</button>
                 </form>
             </div>
@@ -106,7 +106,7 @@
         <div id="modalLogin" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="document.getElementById('modalLogin').style.display='none'">&times;</span>
-                <form id="formularioLogin" method="post"> <!-- Asegúrate de que el ID esté aquí -->
+                <form id="formularioLogin" method="post">
                     <h2>Iniciar Sesión</h2>
                     <input type="email" name="correo" placeholder="Correo" required>
                     <input type="password" name="contrasena" placeholder="Contraseña" required>
@@ -114,6 +114,7 @@
                         <input type="checkbox" name="sesion_iniciada">
                         <label for="sesion_iniciada">Recuérdame</label>
                     </div>
+                    <p>¿No tienes una cuenta? <button id="btnRegistrarseModal">Regístrate</button></p>
                     <button type="submit" id="btnformularioLogin">Ingresar</button>
                 </form>
             </div>
@@ -121,37 +122,12 @@
     </header>
 </section>
 <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        const btnCerrarSesion = document.getElementById('btnCerrarSesion');
-        if (btnCerrarSesion) {
-            btnCerrarSesion.addEventListener('click', function(e) {
-                e.preventDefault();      
-                // Realiza una solicitud AJAX para cerrar sesión
-                fetch('general/logout.php', {
-                    method: 'POST',
-                    // Agrega cualquier encabezado o cuerpo necesario para tu solicitud
-                })
-                .then(response => {
-                    if (response.ok) {
-                        // Recarga la página después de cerrar sesión
-                        window.location.reload();
-                    } else {
-                        alert('La sesión no se pudo cerrar correctamente.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error al cerrar sesión:', error);
-                });
-            });
-        }
-    });
-</script>
-<script>
-    // Ya tienes los manejadores onclick inline en tu HTML que cierran los modales correspondientes.
+    //variables "globales"
     var modalRegistro = document.getElementById("modalRegistro");
     var modalLogin = document.getElementById("modalLogin");
     var btnRegistro = document.getElementById("btnRegistrarse");
     var btnLogin = document.getElementById("btnInicio");
+    //Clicks y función de control de botones y ventanas emergentes de login y registro
     btnRegistro.onclick = function() {
         modalRegistro.style.display = "block";
     }
@@ -163,28 +139,15 @@
             modalRegistro.style.display = "none";
         } else if (event.target == modalLogin) {
             modalLogin.style.display = "none";
-        } else if (event.target == modalPago) { // Asegurándose de cerrar el modalPago si se clickea fuera de él.
+        } else if (event.target == modalPago) {
             modalPago.style.display = "none";
         }
     }
-</script>
-<script>
-    var modalPago = document.getElementById("modalPago");
-    var btnPagarInscribirse = document.getElementById("btnPagarInscribirse");
-    // Manejador del evento submit para el formulario
-    document.getElementById('formularioRegistro').addEventListener('submit', function(e) {
-        e.preventDefault(); // Previene el envío tradicional del formulario
-        verificarCorreoYMostrarModal("input[type=email]", modalPago, true); // Verifica correo y muestra modalPago si es necesario
-    });
-    btnPagarInscribirse.onclick = function() {
-        var datosFormulario = new FormData(document.getElementById('formularioRegistro'));
-        registrarDatos(datosFormulario); // Función para registrar los datos y manejar la lógica de pago
-    };
+    // Script que controla como se muestran los mensajes de exito y error
     function mostrarMensaje(mensaje, esError = false) {
         var mensajeDiv = document.getElementById('mensaje');
         mensajeDiv.textContent = mensaje;
         mensajeDiv.style.display = 'block';
-        //Color de mensaje de error y si no es error color de mensaje de exito
         mensajeDiv.style.backgroundColor = esError ? '#ffb3b3' : '#fff';
         mensajeDiv.style.color = esError ? '#d8000c' : '#333';
         mensajeDiv.style.borderColor = esError ? '#d8000c' : '#888';
@@ -192,7 +155,13 @@
             mensajeDiv.style.display = 'none';
         }, 2000);
     }
-    // Función para verificar correo y opcionalmente mostrar un modal
+    // Script que controla el click en el boton Registrarse y Pagar en el modal de Registrarse
+    var modalPago = document.getElementById("modalPago");
+    document.getElementById('formularioRegistro').addEventListener('submit', function(e) {
+        e.preventDefault();
+        verificarCorreoYMostrarModal("input[type=email]", modalPago, true);
+    });
+    // Script que controla la Verificación del correo al darle al botón Registrarse y Pagar del modal de Registrarse
     function verificarCorreoYMostrarModal(selectorCorreo, modal, esRegistro) {
         var correoInput = document.querySelector(selectorCorreo);
         var correo = correoInput.value;
@@ -218,27 +187,28 @@
             mostrarMensaje("Ocurrió un error al verificar el correo. Inténtalo de nuevo.", true);
         });
     }
-    // Función para registrar datos y manejar lógica de pago
+    // Script que controla la accion de Registrarse en el modal de pago
+    var btnPagarInscribirse = document.getElementById("btnPagarInscribirse");
+    btnPagarInscribirse.onclick = function() {
+        var datosFormulario = new FormData(document.getElementById('formularioRegistro'));
+        registrarDatos(datosFormulario); // Función para registrar los datos y manejar la lógica de pago
+    };
     function registrarDatos(datosFormulario) {
         fetch('general/registrar.php', {
             method: 'POST',
             body: datosFormulario
         })
-        .then(response => response.json()) // Asegúrate de que registrar.php envía una respuesta JSON
+        .then(response => response.json())
         .then(data => {
             if (data.exito) {
-                // Manejo de respuesta de éxito
                 mostrarMensaje("Simulación de comunicación con el banco...");
                 setTimeout(function() {
-                    // Aquí podrías redirigir al usuario a otra página o realizar alguna otra acción
                     mostrarMensaje("Pago realizado!");
                     setTimeout(function() {
-                        // Recarga la página sin necesidad de ocultar los modales manualmente
                         window.location.reload();
-                    }, 2000); // Espera 2 segundos después de mostrar "Pago realizado!"
-                }, 2000); // Espera 2 segundos después de mostrar mensaje de éxito de registro
+                    }, 2000);
+                }, 2000);
             } else {
-                // Manejo de respuesta de error
                 mostrarMensaje("Error al realizar el pago. Por favor, intenta de nuevo.", true);
             }
         })
@@ -247,10 +217,11 @@
             mostrarMensaje("Error al procesar el pago. Por favor, intenta de nuevo.", true);
         });
     }
+    //Script que controla la acción de Login en el modal de login
     document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('formularioLogin').addEventListener('submit', function(e) {
-            e.preventDefault(); // Prevenir el envío tradicional del formulario
-            var datosFormulario = new FormData(this); // 'this' se refiere al formulario
+            e.preventDefault();
+            var datosFormulario = new FormData(this);
             fetch('general/login.php', {
                 method: 'POST',
                 body: datosFormulario
@@ -258,11 +229,9 @@
             .then(response => response.json())
             .then(data => {
                 if (data.exito) {
-                    // Login exitoso, recargar la página
                     window.location.reload();
                 } else {
-                    // Mostrar mensaje de error
-                    mostrarMensaje(data.mensaje, true); // Asegúrate de tener una función para mostrar mensajes
+                    mostrarMensaje("Correo o contraseña incorrecta.", true);
                 }
             })
             .catch(error => {
@@ -271,8 +240,7 @@
             });
         });
     });
-</script>
-<script>
+    //Script para cambiar el precio cada vez que se selecciona una suscripción
     document.addEventListener('DOMContentLoaded', function() {
         const precios = {
             semanal: '11.90€',
@@ -281,14 +249,49 @@
         };
         const selectSuscripcion = document.querySelector('[name="suscripcion"]');
         const precioSuscripcion = document.getElementById('precioSuscripcion');
-        // Función para actualizar el precio
         const actualizarPrecio = () => {
             const cuota = selectSuscripcion.value;
             precioSuscripcion.textContent = precios[cuota] || '';
         };
-        // Evento para cambiar el precio cada vez que se selecciona una nueva suscripción
         selectSuscripcion.addEventListener('change', actualizarPrecio);
-        // Actualizar el precio inicial al cargar la página
         actualizarPrecio();
+    });
+    //Script de control del boton Registrarse en el modal login
+    document.addEventListener('DOMContentLoaded', function() {
+        var btnRegistroModal = document.getElementById("btnRegistrarseModal")
+        btnRegistroModal.onclick = function() {
+            modalLogin.style.display = "none";
+            modalRegistro.style.display = "block";
+        }
+    });
+    //Script de control del boton Login en el modal Registrarse
+    document.addEventListener('DOMContentLoaded', function() {
+        var btnLoginModal = document.getElementById("btnLoginModal")
+        btnLoginModal.onclick = function() {
+            modalLogin.style.display = "block";
+            modalRegistro.style.display = "none";
+        }
+    });
+    //Script del botón de cerrar sesión
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const btnCerrarSesion = document.getElementById('btnCerrarSesion');
+        if (btnCerrarSesion) {
+            btnCerrarSesion.addEventListener('click', function(e) {
+                e.preventDefault();
+                fetch('general/logout.php', {
+                    method: 'POST',
+                })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        alert('La sesión no se pudo cerrar correctamente.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al cerrar sesión:', error);
+                });
+            });
+        }
     });
 </script>
