@@ -122,6 +122,28 @@
     </header>
 </section>
 <script>
+    //Script del botón de cerrar sesión
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const btnCerrarSesion = document.getElementById('btnCerrarSesion');
+        if (btnCerrarSesion) {
+            btnCerrarSesion.addEventListener('click', function(e) {
+                e.preventDefault();
+                fetch('general/logout.php', {
+                    method: 'POST',
+                })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        alert('La sesión no se pudo cerrar correctamente.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al cerrar sesión:', error);
+                });
+            });
+        }
+    });
     //variables "globales"
     var modalRegistro = document.getElementById("modalRegistro");
     var modalLogin = document.getElementById("modalLogin");
@@ -270,28 +292,6 @@
         btnLoginModal.onclick = function() {
             modalLogin.style.display = "block";
             modalRegistro.style.display = "none";
-        }
-    });
-    //Script del botón de cerrar sesión
-    document.addEventListener('DOMContentLoaded', (event) => {
-        const btnCerrarSesion = document.getElementById('btnCerrarSesion');
-        if (btnCerrarSesion) {
-            btnCerrarSesion.addEventListener('click', function(e) {
-                e.preventDefault();
-                fetch('general/logout.php', {
-                    method: 'POST',
-                })
-                .then(response => {
-                    if (response.ok) {
-                        window.location.reload();
-                    } else {
-                        alert('La sesión no se pudo cerrar correctamente.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error al cerrar sesión:', error);
-                });
-            });
         }
     });
 </script>
