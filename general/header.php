@@ -4,6 +4,9 @@
     if (isset($_COOKIE['usuarioLogueado'])) {
         $_SESSION['usuario'] = $_COOKIE['usuarioLogueado'];
     }
+    if (isset($_COOKIE['correoUsuario'])) {
+        $_SESSION['correo'] = $_COOKIE['correoUsuario'];
+    }
     ?>
     <header>
         <div class="logo-titulo">
