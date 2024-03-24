@@ -1,5 +1,13 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+if (!isset($_SESSION['usuario']) && !isset($_SESSION['correo'])) {
+    header('Location: ./index.php');
+    exit();
+}
+?>
+<?php
 $servername = "localhost";
 $username = "coregym";
 $password = "";
@@ -35,6 +43,57 @@ mysqli_close($conn);
     <link rel="stylesheet" href="css/general.css">
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/footer.css">
+    <style>
+        /* Estilos para las secciones de clases y detalles */
+        .clase {
+            background: #fff;
+            margin: 10px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .clase h2 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+        .clase p {
+            margin: 0;
+            color: #666;
+        }
+        .detalle {
+            display: none; /* Detalles ocultos inicialmente */
+            padding-top: 10px;
+        }
+        /* Estilos para botones dentro de la sección de clases */
+        .clase button {
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            padding: 8px 15px;
+            margin-top: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .clase button:hover {
+            background-color: #0056b3;
+        }
+        /* Estilos específicos para los botones de 'Ver más detalles' y 'Ver menos detalles' */
+        .clase .toggleDetalles {
+            font-size: 0.9rem;
+            text-decoration: underline;
+            background: none;
+            color: #007bff;
+            padding: 0;
+            border: none;
+            cursor: pointer;
+        }
+        /* Ajustes para mejorar la accesibilidad */
+        .clase button:focus {
+            outline: 2px solid #0056b3;
+            outline-offset: 2px;
+        }
+    </style>
 </head>
 <body>
     <!-- Inclusión del header -->
@@ -53,7 +112,9 @@ mysqli_close($conn);
                 </div>
             <?php endwhile; ?>
         <?php else: ?>
-            <p>No has registrado clases aún.</p>
+            <div class="clase">
+                <p>No has registrado clases aún.</p>
+            </div>
         <?php endif; ?>
     </div>
     <!-- Inclusión del footer -->
