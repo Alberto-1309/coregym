@@ -1,6 +1,8 @@
 <section>
     <?php
-    session_start();
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }    
     if (isset($_COOKIE['usuarioLogueado'])) {
         $_SESSION['usuario'] = $_COOKIE['usuarioLogueado'];
     }
