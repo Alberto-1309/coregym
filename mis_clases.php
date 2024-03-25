@@ -1,3 +1,4 @@
+
 <?php
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
@@ -17,15 +18,13 @@ if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
 $correoUsuario = $_SESSION['correo'] ?? '';
-// Prevenir inyecciones SQL
 $correoUsuario = mysqli_real_escape_string($conn, $correoUsuario);
-// Primero, obtenemos el USUARIOID basado en el correo
 $sqlUsuario = "SELECT USUARIOID FROM usuarios WHERE CORREO = '$correoUsuario'";
 $resultadoUsuario = mysqli_query($conn, $sqlUsuario);
 $rowUsuario = mysqli_fetch_assoc($resultadoUsuario);
 $usuarioId = $rowUsuario['USUARIOID'] ?? 0;
-// Ahora, buscamos las clases y las sesiones a las que asiste el usuario
-$sqlClases = "SELECT c.NOMBRECLASE, s.FECHA_SESION, s.HORA_SESION, c.DESCRIPCION
+$_SESSION['usuarioId'] = $usuarioId;
+$sqlClases = "SELECT c.CLASEID, s.FECHA_SESION, c.DESCRIPCION, a.SESIONID
               FROM clases c
               JOIN sesiones s ON c.CLASEID = s.CLASEID
               JOIN atiende a ON s.SESIONID = a.SESIONID
@@ -39,12 +38,11 @@ mysqli_close($conn);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Coregym</title>
-    <!-- CSS GENERAL -->
     <link rel="stylesheet" href="css/general.css">
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/footer.css">
     <style>
-        /* Estilos para las secciones de clases y detalles */
+        /* Estilos para clases */
         .clase {
             background: #fff;
             margin: 10px;
@@ -61,7 +59,7 @@ mysqli_close($conn);
             color: #666;
         }
         .detalle {
-            display: none; /* Detalles ocultos inicialmente */
+            display: none;
             padding-top: 10px;
         }
         /* Estilos para botones dentro de la sección de clases */
@@ -96,19 +94,18 @@ mysqli_close($conn);
     </style>
 </head>
 <body>
-    <!-- Inclusión del header -->
     <?php include './general/header.php';?>
     <div class="cuerpo">
         <?php if (mysqli_num_rows($resultadoClases) > 0): ?>
             <?php while($row = mysqli_fetch_assoc($resultadoClases)): ?>
                 <div class="clase">
-                    <h2><?= $row['NOMBRECLASE'] ?></h2>
-                    <p><?= $row['FECHA_SESION'] ?> <?= $row['HORA_SESION'] ?></p>
-                    <button onclick="toggleDetalles(this)">Ver más detalles</button>
+                    <h2>SALA: <?= htmlspecialchars($row['CLASEID']) ?></h2>
+                    <p>Fecha y hora: <?= date('Y-m-d H:i:s', strtotime($row['FECHA_SESION'])) ?></p>
                     <div class="detalle">
-                        <p><?= $row['DESCRIPCION'] ?></p>
-                        <button onclick="toggleDetalles(this)">Ver menos detalles</button>
+                        <p>Descripción: <?= htmlspecialchars($row['DESCRIPCION']) ?></p>
                     </div>
+                    <button onclick="toggleDetalles(this)">Ver más detalles</button>
+                    <button class="eliminarAsistencia" data-sesionid="<?= $row['SESIONID'] ?>">Eliminar asistencia</button>
                 </div>
             <?php endwhile; ?>
         <?php else: ?>
@@ -117,12 +114,12 @@ mysqli_close($conn);
             </div>
         <?php endif; ?>
     </div>
-    <!-- Inclusión del footer -->
     <?php include './general/footer.php';?>
     <script>
+        //Script para ocultar y motrar los detalles
         function toggleDetalles(button) {
             var detalleDiv = button.parentNode.querySelector('.detalle');
-            if (detalleDiv.style.display === 'none') {
+            if (detalleDiv.style.display !== 'block') {
                 detalleDiv.style.display = 'block';
                 button.textContent = 'Ver menos detalles';
             } else {
@@ -130,6 +127,31 @@ mysqli_close($conn);
                 button.textContent = 'Ver más detalles';
             }
         }
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.querySelectorAll('.detalle').forEach(function(detalle) {
+                detalle.style.display = 'none';
+            });
+        });
+        //Script para eliminar asistencia a una clase     
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.eliminarAsistencia').forEach(button => {
+                button.addEventListener('click', function() {
+                    const sesionId = this.getAttribute('data-sesionid');
+                    if(confirm('¿Estás seguro de que quieres eliminar tu asistencia a esta clase?')) {
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("POST", "./general/eliminar_asistencia.php", true);
+                        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                        xhr.onreadystatechange = function() {
+                            if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                                window.location.reload();
+                                alert('Asistencia eliminada con éxito.');
+                            }
+                        }
+                        xhr.send("sesionId=" + sesionId);
+                    }
+                });
+            });
+        });
     </script>
 </body>
 </html>
