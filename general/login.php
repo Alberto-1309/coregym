@@ -18,6 +18,7 @@ if (mysqli_num_rows($result) > 0) {
     $row = mysqli_fetch_assoc($result);
     if ($contrasena == $row['CONTRASENA']) {
         $_SESSION['usuario'] = $row['NOMBRE'];
+        $_SESSION['correo'] = $row['CORREO'];
         if (isset($_POST['sesion_iniciada']) && $_POST['sesion_iniciada'] == 'on') {
             $expiracion = time() + (30 * 24 * 60 * 60); // 30 días
             setcookie('usuarioLogueado', $row['NOMBRE'], $expiracion, "/");
