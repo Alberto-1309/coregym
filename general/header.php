@@ -26,16 +26,24 @@
             <a href="sobre-nosotros.php">+Sobre nosotros</a>
             <a href="contacto.php">Contacto</a>
             <?php if(isset($_SESSION['usuario'])): ?>
-                <a href="mis_clases.php">Mis clases</a>
-                <span><?php echo htmlspecialchars($_SESSION['usuario']); ?></span>
-                    <form action="logout.php" method="post" style="display: inline;">
-                        <button type="submit" id="btnCerrarSesion" style="cursor: pointer;">Cerrar Sesión</button>
-                    </form>
+                <div class="usuario-menu">
+                    <div class="usuario-nombre" onclick="toggleMenuUsuario()">
+                        <?php echo htmlspecialchars($_SESSION['usuario']); ?> &#9662;
+                    </div>
+                    <div class="menu-usuario-opciones" style="display: none;">
+                        <a href="mis_clases.php">Mis clases</a>
+                        <a href="mis_datos.php">Mis datos</a>
+                        <form action="logout.php" method="post" style="display: block;">
+                            <button type="submit" id="btnCerrarSesion" style="cursor: pointer;">Cerrar Sesión</button>
+                        </form>
+                    </div>
+                </div>
             <?php else: ?>
                 <button id="btnRegistrarse">INSCRÍBETE</button>
                 <button id="btnInicio">MI CUENTA</button>
             <?php endif; ?>
         </nav>
+
         <div id="mensaje" style="display:none;"></div>
         <!-- Modal de Registro -->
         <div id="modalRegistro" class="modal">
@@ -79,13 +87,13 @@
                     </fieldset>
                     <br>
                     <fieldset>
-                        <legend>PESO</legend>
-                        <input type="number" step="any" name="peso" placeholder="Peso (kg)" required>
+                        <legend>PESO (Opcional)</legend>
+                        <input type="number" step="any" name="peso" placeholder="Peso (kg)">
                     </fieldset>
                     <br>
                     <fieldset>
-                        <legend>ALTURA</legend>
-                        <input type="number" step="any" name="altura" placeholder="Altura (cm)" required>
+                        <legend>ALTURA (Opcional)</legend>
+                        <input type="number" step="any" name="altura" placeholder="Altura (cm)">
                     </fieldset>
                     <br>
                     <div class="sesion_iniciada">
@@ -127,6 +135,15 @@
     </header>
 </section>
 <script>
+    //Script boton menu usuario
+    function toggleMenuUsuario() {
+        var menu = document.querySelector('.menu-usuario-opciones');
+        if (menu.style.display === 'none' || menu.style.display === '') {
+            menu.style.display = 'block';
+        } else {
+            menu.style.display = 'none';
+        }
+    }
     //Script del botón de cerrar sesión
     document.addEventListener('DOMContentLoaded', (event) => {
         const btnCerrarSesion = document.getElementById('btnCerrarSesion');

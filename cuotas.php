@@ -51,7 +51,11 @@
                 <li>Renovación cuota semestral (195.00€)</li>
                 <li>Cuota promocional bajo domiciliación</li>
             </ul>
-            <button class="btnApuntarse" data-cuota="semestral">¡ME APUNTO!</button>
+            <?php if (isset($_SESSION['usuario'])): ?>
+                <button class="btnRenovar" data-cuota="semestral">¡RENOVAR!</button>
+            <?php else: ?>
+                <button class="btnApuntarse" data-cuota="semestral">¡ME APUNTO!</button>
+            <?php endif; ?>        
         </div>
         <div class="cuota">
             <h2>CUOTA MENSUAL</h2>
@@ -62,7 +66,11 @@
                 <li>Renovación cuota mensual (35.90€)</li>
                 <li>Cuota promocional bajo domiciliación</li>
             </ul>
-            <button class="btnApuntarse" data-cuota="mensual">¡ME APUNTO!</button>
+            <?php if (isset($_SESSION['usuario'])): ?>
+                <button class="btnRenovar" data-cuota="mensual">¡RENOVAR!</button>
+            <?php else: ?>
+                <button class="btnApuntarse" data-cuota="mensual">¡ME APUNTO!</button>
+            <?php endif; ?>
         </div>
         <div class="cuota">
             <h2>CUOTA SEMANAL</h2>
@@ -73,19 +81,79 @@
                 <li>Renovación cuota semanal (11.90€)</li>
                 <li>Cuota promocional bajo domiciliación</li>
             </ul>
-            <button class="btnApuntarse" data-cuota="semanal">¡ME APUNTO!</button>
+            <?php if (isset($_SESSION['usuario'])): ?>
+                <button class="btnRenovar" data-cuota="semanal">¡RENOVAR!</button>
+            <?php else: ?>
+                <button class="btnApuntarse" data-cuota="semanal">¡ME APUNTO!</button>
+            <?php endif; ?>
         </div>
     </div>
     <!-- Inclusión del footer -->
     <?php include './general/footer.php';?>
+    <!-- Modal de Renovación -->
+    <div id="modalRenovacion" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="document.getElementById('modalRenovacion').style.display='none'">&times;</span>
+            <h2>Renovar Membresía</h2>
+            <p>Selecciona la membresía que deseas renovar.</p>
+            <form id="formularioRenovacion" onsubmit="event.preventDefault(); renovarMembresia();">
+                <fieldset>
+                        <legend>MEMBRESÍA</legend>
+                        <div class="selector">
+                            <select name="tipoCuotaRenovacion" required>
+                                <option value="semanal">Semanal - 11.90€</option>
+                                <option value="mensual">Mensual - 35.90€</option>
+                                <option value="semestral">Semestral - 195.00€</option>
+                            </select>
+                        </div>
+                        <span id="precioSuscripcion"></span>
+                    </fieldset>
+                <button id="btnformulario" type="submit">Renovar</button>
+            </form>
+        </div>
+    </div>
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const btnsRenovar = document.querySelectorAll('.btnRenovar');
+            btnsRenovar.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tipoCuota = this.getAttribute('data-cuota');
+                    document.querySelector('#formularioRenovacion [name="tipoCuotaRenovacion"]').value = tipoCuota;
+                    document.getElementById('modalRenovacion').style.display = 'block';
+                });
+            });
+        });
+        function renovarMembresia() {
+            var formData = new FormData(document.getElementById('formularioRenovacion'));
+            fetch('./general/renovar_membresia.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Configurar el mensaje según la respuesta recibida
+                mostrarMensaje(data.mensaje, !data.exito);
+
+                if (data.exito) {
+                    // Si la operación fue exitosa, opcionalmente puedes recargar la página después de 2 segundos
+                    setTimeout(() => window.location.reload(), 2000);
+                }
+            })
+            .catch(error => {
+                // Manejar errores de la solicitud fetch, como problemas de red
+                console.error('Error:', error);
+                mostrarMensaje('Error al procesar la solicitud de renovación.', true);
+            });
+
+            // Cierra el modal de renovación inmediatamente después del clic
+            document.getElementById('modalRenovacion').style.display = 'none';
+        }
+        //Script de registro en cuotas
         document.addEventListener('DOMContentLoaded', function() {
             // Agregar evento click a cada botón de ¡ME APUNTO!
             document.querySelectorAll('.btnApuntarse').forEach(function(btn) {
                 btn.addEventListener('click', function() {
-                    // Aquí podrías establecer el tipo de cuota seleccionado, por ejemplo:
                     var tipoDeCuota = this.getAttribute('data-cuota');
-                    // Suponiendo que tu formulario tenga un campo para el tipo de cuota:
                     var campoCuota = document.querySelector('#formularioRegistro [name="suscripcion"]');
                     if(campoCuota) {
                         campoCuota.value = tipoDeCuota;
@@ -102,9 +170,7 @@
                         const cuota = selectSuscripcion.value;
                         precioSuscripcion.textContent = precios[cuota] || '';
                     };
-                    // Actualizar el precio inicial al cargar la página
                     actualizarPrecio();
-                    // Mostrar el modal de registro
                     document.getElementById('modalRegistro').style.display = 'block';
                 });
             });

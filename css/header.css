@@ -16,7 +16,7 @@ header {
     text-decoration: none;
     color: inherit;
 }
-nav a, nav button { 
+nav a { 
     margin: 0 10px; 
     text-decoration: none; 
     color: #000; 
@@ -46,6 +46,8 @@ nav a, nav button {
     color: white;
     padding: 10px 20px;
     font-size: 16px;
+    width: 100%;
+    height: auto;
     border: none;
     cursor: pointer;
 }
@@ -137,4 +139,59 @@ input[type=text], input[type=email], input[type=password] {
     cursor: pointer; 
     padding: 0;
     color: blue;
+}
+/* Asegúrate de que el contenedor del menú de usuario tenga posición relativa */
+.usuario-menu {
+    position: relative; /* Esto permite que el menú desplegable se posicione absolutamente en relación con él */
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.usuario-nombre {
+    background-color: #0056b3;
+    color: white;
+    padding: 10px 15px; /* Ajusta el padding según sea necesario */
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-block; /* Cambio para asegurar que se pueda medir el ancho */
+}
+
+/* Asegúrate de que el menú desplegable tenga el mismo ancho que el recuadro del nombre del usuario */
+.menu-usuario-opciones {
+    position: absolute;
+    top: 100%; /* Coloca el menú debajo del nombre del usuario */
+    right: 0;
+    left: 0; /* Asegura que el menú se expanda hacia la izquierda también */
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    overflow: hidden; /* Para bordes redondeados en el menú desplegable */
+    z-index: 1;
+    display: none; /* Empieza oculto */
+}
+
+.menu-usuario-opciones a, .menu-usuario-opciones form {
+    color: black;
+    padding: 10px 15px; /* Igual al padding del usuario-nombre */
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    background-color: #fff;
+    margin: 5px 0; /* Agrega margen entre opciones */
+    border-bottom: 1px solid #ddd; /* Línea separadora */
+}
+
+.menu-usuario-opciones a:last-child, .menu-usuario-opciones form:last-child {
+    border-bottom: none;
+}
+
+.menu-usuario-opciones a:hover, .menu-usuario-opciones form:hover {
+    background-color: #f1f1f1;
+}
+
+.menu-usuario-opciones a:last-child, .menu-usuario-opciones form:last-child {
+    border-bottom: none; /* No border for the last element */
+}
+.menu-usuario-opciones a:hover, .menu-usuario-opciones form:hover {
+    background-color: #f1f1f1;
 }
